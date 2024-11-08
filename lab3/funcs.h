@@ -84,7 +84,7 @@ void restart_buffer(t_buffer *st_buffer);
 void allocate_lex(t_lex *st_lex);
 void restart_lex(t_lex *st_lex);
 void insert_on_lex(t_lex *st_lex, char next_char);
-void is_reserved_word(t_lex *st_lex);
+void is_reserved_word(t_lex *st_lex, t_buffer st_buffer);
 void print_lex(t_lex *st_lex);
 
 #endif

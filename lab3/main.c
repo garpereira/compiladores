@@ -46,16 +46,18 @@ int main(int argc, char **argv){
                 case ')':
                 case '[':
                 case ']':// vou pegar a string que esta acumulada no buffer e vou ver se é palavra reservada
-                    if(st_lex.char_position)
-                        is_reserved_word(&st_lex);
+                    if(st_lex.char_position){
+                        is_reserved_word(&st_lex, st_buffer);
+                        print_lex(&st_lex);
+                    }
                     break;
-                case '\'':
+                case '\'': // literal
                     do{
                         next_char = get_next_char(&st_buffer);
                         insert_on_lex(&st_lex, next_char);
                     }while(next_char != '\'');
                     break;
-                case '"': 
+                case '"': // literal
                     do{
                         next_char = get_next_char(&st_buffer);
                         insert_on_lex(&st_lex, next_char);

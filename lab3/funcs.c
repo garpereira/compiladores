@@ -28,6 +28,7 @@ void allocate_lex(t_lex *st_lex){
         exit(1);
     }
     st_lex->char_position = 0;
+    st_lex->token = 0;
 }
 
 void deallocate_lex(t_lex *st_lex){
@@ -51,13 +52,14 @@ char get_next_char(t_buffer *st_buffer){
     return st_buffer->buffer[st_buffer->char_position++];
 }
 
-void is_reserved_word(t_lex *st_lex){
+void is_reserved_word(t_lex *st_lex, t_buffer st_buffer){
     for(int i=0; i < TOKEN_COUNT; i++){
         if(!strcmp(st_lex->lexema, reserved_words[i])){
             st_lex->token = i;
-            return;
+            break;
         }
     }
+    st_lex->char_line_position = st_buffer.char_line_position;
 }
 
 void print_lex(t_lex *st_lex){
