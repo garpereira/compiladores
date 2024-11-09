@@ -9,8 +9,7 @@ int main(int argc, char **argv){
         printf("Error loading file!\nAborting...");
         return 1;
     }
-
-    int option;
+    
     char *next_char;
     t_buffer st_buffer;
     t_lex st_lex;
@@ -20,15 +19,14 @@ int main(int argc, char **argv){
     while(fgets(st_buffer.buffer, MAX_BUFFER, file)){
         next_char = get_next_char(&st_buffer);
         do{
-            // lí o char, agora preciso ir lendo enquanto eu não identificar um char que quebre(espaço, \n, ;)
-            printf("\nO que deseja fazer com o char (%c)?\n", next_char);
-            printf("1 - Printar\n2 - Nada\nR: ");
-            scanf("%d", &option);
             // preciso verificar se o char é algum tipo de quebra, se for, então eu vou verificar o buffer outro
             // e identificar a qual token o lexema encontrado pertence, jogar ele na struct e imprimir
             // se não for, então vou atribuir ele em um outro buffer
             switch (*next_char){
                 case 'a' ... 'z':
+                    insert_on_lex(&st_lex, next_char);
+                    break;
+                case 'A' ... 'Z':
                     insert_on_lex(&st_lex, next_char);
                     break;
                 case ';':
