@@ -62,6 +62,41 @@ void is_reserved_word(t_lex *st_lex, t_buffer st_buffer){
     st_lex->char_line_position = st_buffer.char_line_position;
 }
 
+void automate_reserved_word(t_lex *st_lex, t_buffer *st_buffer, char *next_char){
+    switch(*next_char){
+        case 'a' ... 'z':
+            insert_on_lex(&st_lex, next_char);
+            next_char = get_next_char(&st_buffer);
+            return automate_reserved_word(st_lex, st_buffer, next_char);
+    }
+}
+
+void automate_literal_single_word(t_lex *st_lex, t_buffer *st_buffer, char *next_char){
+    switch(*next_char){
+        case '\'':
+            st_lex->char_line_position = st_buffer->char_line_position;
+            st_lex->token = LITERAL;
+            break;
+        default:
+            insert_on_lex(st_lex, next_char);
+            next_char = get_next_char(st_buffer);
+            return automate_literal_word(st_lex, st_buffer, next_char);
+    }
+}
+
+void automate_literal_mult_word(t_lex *st_lex, t_buffer *st_buffer, char *next_char){
+    switch(*next_char){
+        case '"':
+            st_lex->char_line_position = st_buffer->char_line_position;
+            st_lex->token = LITERAL;
+            break;
+        default:
+            insert_on_lex(st_lex, next_char);
+            next_char = get_next_char(st_buffer);
+            return automate_literal_word(st_lex, st_buffer, next_char);
+    }
+}
+
 void print_lex(t_lex *st_lex){
     printf("Linha: %d, Lexema: %s, Token: %d", st_lex->char_line_position, st_lex->lexema, st_lex->token);
     restart_lex(st_lex);

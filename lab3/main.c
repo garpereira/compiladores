@@ -9,7 +9,7 @@ int main(int argc, char **argv){
         printf("Error loading file!\nAborting...");
         return 1;
     }
-    
+
     char *next_char;
     t_buffer st_buffer;
     t_lex st_lex;
@@ -19,55 +19,30 @@ int main(int argc, char **argv){
     while(fgets(st_buffer.buffer, MAX_BUFFER, file)){
         next_char = get_next_char(&st_buffer);
         do{
-            // preciso verificar se o char é algum tipo de quebra, se for, então eu vou verificar o buffer outro
-            // e identificar a qual token o lexema encontrado pertence, jogar ele na struct e imprimir
-            // se não for, então vou atribuir ele em um outro buffer
             switch (*next_char){
-                case 'a' ... 'z':
+                case 'a' ... 'z': // palavras reservadas são sempre em minúsculo
                     insert_on_lex(&st_lex, next_char);
+                    next_char = get_next_char(&st_buffer);
+                    automate_reserved_word(&st_lex, &st_buffer, &next_char);
                     break;
                 case 'A' ... 'Z':
                     insert_on_lex(&st_lex, next_char);
                     break;
-                case ';':
-                case ',':
-                case '=':
-                case '+':
-                case '-':
-                case '/':
-                case ' ':
-                case '<':
-                case '>':
-                case '!':
-                case '|':
-                case ':': 
-                case '{':
-                case '}':
-                case '(':
-                case ')':
-                case '[':
-                case ']':// vou pegar a string que esta acumulada no buffer e vou ver se é palavra reservada
+                case '\'': // literal
+                    next_char = get_next_char(&st_buffer);
+                    automate_literal_single_word(&st_lex, &st_buffer, &next_char);
+                    break;
+                case '"': // literal
+                    next_char = get_next_char(&st_buffer);
+                    automate_literal_mult_word(&st_lex, &st_buffer, &next_char);
+                    break;
+                default:
                     if(st_lex.char_position){
                         is_reserved_word(&st_lex, st_buffer);
                         print_lex(&st_lex);
                     }
                     break;
-                case '\'': // literal
-                    do{
-                        next_char = get_next_char(&st_buffer);
-                        insert_on_lex(&st_lex, next_char);
-                    }while(next_char != '\'');
-                    break;
-                case '"': // literal
-                    do{
-                        next_char = get_next_char(&st_buffer);
-                        insert_on_lex(&st_lex, next_char);
-                    }while(next_char != '"');
-                    break;
-                default: // se nao for nenhuma quebra
-                    break;
             }
-            next_char = get_next_char(&st_buffer);
             // filled the buffer, but doesn't reach the end of the line
             if (next_char == '\0'){
                 restart_buffer(&st_buffer);
@@ -75,6 +50,8 @@ int main(int argc, char **argv){
                     break;
                 next_char = get_next_char(&st_buffer);
             }
+            else
+                next_char = get_next_char(&st_buffer);
 
         }while(next_char != '\n'); // reach the end of the line
 
@@ -82,6 +59,8 @@ int main(int argc, char **argv){
         restart_buffer(&st_buffer);
     }
     deallocate_buffer(&st_buffer);
+    deallocate_lex(&st_lex);
+    free(next_char);
     fclose(file);
     return 0;
 }
