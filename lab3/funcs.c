@@ -53,7 +53,7 @@ char get_next_char(t_buffer *st_buffer){
 }
 
 void is_reserved_word(t_lex *st_lex, t_buffer st_buffer){
-    for(int i=0; i < TOKEN_COUNT; i++){
+    for(int i=IF; i < TOKEN_COUNT; i++){
         if(!strcmp(st_lex->lexema, reserved_words[i])){
             st_lex->token = i;
             break;

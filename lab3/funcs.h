@@ -12,18 +12,9 @@ enum tokens{
     COMPARACAO, // < or > or <= or >= or == or !=
     LITERAL, // palavras entre "" ou ''
     IF, ELSE, WHILE, DO, FOR, SWITCH, CASE, BREAK, CONTINUE, RETURN, // reserved words
-    INT, CHAR, FLOAT, DOUBLE, LONG, AUTO, EXTERN, REGISTER, STATIC, SIGNED, UNSIGNED, SHORT, // variables types
-    CONST, VOLATILE, // variables modifiers
-    SIZEOF, //unary operator
-    GOTO, // command
-    STRUCT, UNION, ENUM, // structs types
-    TYPEDEF, // type definer
-    VOID, // empty type
-    EOF_TOKEN, // end of file
-    PERROR, // error
-    PACKED, //_Packed
-    ASM, // assembly instructions
-    TOKEN_COUNT, // total tokens
+    INT, CHAR, FLOAT, DOUBLE, LONG, AUTO, EXTERN, REGISTER, STATIC, SIGNED, UNSIGNED, SHORT,
+    CONST, VOLATILE, SIZEOF, GOTO, STRUCT, UNION, ENUM, TYPEDEF, VOID, EOF_TOKEN, PERROR, ASM,
+    TOKEN_COUNT,  
 };
 
 char *reserved_words[TOKEN_COUNT] = {
@@ -60,7 +51,6 @@ char *reserved_words[TOKEN_COUNT] = {
     [VOID]         = "void",
     [EOF_TOKEN]    = "EOF",
     [PERROR]       = "perror",
-    [PACKED]       = "_Packed",
     [ASM]          = "asm"
 };
 

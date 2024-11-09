@@ -28,6 +28,9 @@ int main(int argc, char **argv){
             // e identificar a qual token o lexema encontrado pertence, jogar ele na struct e imprimir
             // se não for, então vou atribuir ele em um outro buffer
             switch (*next_char){
+                case 'a' ... 'z':
+                    insert_on_lex(&st_lex, next_char);
+                    break;
                 case ';':
                 case ',':
                 case '=':
@@ -63,8 +66,7 @@ int main(int argc, char **argv){
                         insert_on_lex(&st_lex, next_char);
                     }while(next_char != '"');
                     break;
-                default: // se nao for nenhuma quebra, então o padrao vai ser atribuir a letra no buffer
-                    insert_on_lex(&st_lex, next_char);
+                default: // se nao for nenhuma quebra
                     break;
             }
             next_char = get_next_char(&st_buffer);
